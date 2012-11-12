@@ -1,6 +1,24 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Home";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Hello World!</h2>
+<div class="span1"></div>
+<div class="span10">
+    <div class="tabbable reservation_container">
+        <!-- Only required for left/right tabs -->
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab1" data-toggle="tab">Select dates</a></li>
+            <li><a href="#tab2" data-toggle="tab">Select rooms &amp; rates</a></li>
+            <li><a href="#tab2" data-toggle="tab">Enhance your stay</a></li>
+            <li><a href="#tab2" data-toggle="tab">Enter guest details</a></li>
+            <li><a href="#tab2" data-toggle="tab">Confirm booking</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab1">
+                <p>
+                    I'm in Section 1.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="span1"></div>
