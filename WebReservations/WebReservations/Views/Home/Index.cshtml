@@ -2,23 +2,56 @@
     ViewBag.Title = "Home";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="span1"></div>
+<div class="span1">
+</div>
 <div class="span10">
     <div class="tabbable reservation_container">
         <!-- Only required for left/right tabs -->
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="#tab1" data-toggle="tab">Select dates</a></li>
-            <li><a href="#tab2" data-toggle="tab">Select rooms &amp; rates</a></li>
-            <li><a href="#tab2" data-toggle="tab">Enhance your stay</a></li>
-            <li><a href="#tab2" data-toggle="tab">Enter guest details</a></li>
-            <li><a href="#tab2" data-toggle="tab">Confirm booking</a></li>
+        <ul class="nav nav-tabs" id="steps">
+            <li class="active"><a href="#dates" data-toggle="tab">Select dates</a></li>
+            <li><a href="#room_rates" data-toggle="tab">Select rooms &amp; rates</a></li>
+            <li><a href="#enhance_stay" data-toggle="tab">Enhance your stay</a></li>
+            <li><a href="#guest_details" data-toggle="tab">Enter guest details</a></li>
+            <li><a href="#confirm_booking" data-toggle="tab">Confirm booking</a></li>
         </ul>
         <div class="tab-content">
-            <div class="tab-pane active" id="tab1">
+            <div class="summary">
                 <p>
-                    I'm in Section 1.</p>
+                    This is a summary.</p>
+            </div>
+            <div class="alert alert-error" style="display: none;">
+                Invalid action
+            </div>
+            <div class="tab-pane active" id="dates">
+                <p>
+                    Select dates</p>
+            </div>
+            <div class="tab-pane" id="room_rates">
+                <p>
+                    Select rooms &amp; rates</p>
+            </div>
+            <div class="tab-pane" id="enhance_stay">
+                <p>
+                    Enhance your stay</p>
+            </div>
+            <div class="tab-pane" id="guest_details">
+                <p>
+                    Enter guest details</p>
+            </div>
+            <div class="tab-pane" id="confirm_booking">
+                <p>
+                    Enter guest details</p>
+            </div>
+            <div class="bottom_nav pull-right">
+                <div class="btn-group">
+                    <button class="btn" id="back">
+                        Back</button>
+                    <button class="btn" id="next">
+                        Next</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<div class="span1"></div>
+<div class="span1">
+</div>
