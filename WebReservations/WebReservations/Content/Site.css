@@ -23,3 +23,31 @@
     border-bottom: 1px solid #DDD;
     border-radius: 0px 0px 5px 5px;
 }
+
+.center
+{
+    text-align: center;
+}
+
+.ui-datepicker-trigger
+{
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: transparent;
+    background-image: url("themes/base/images/calendar.png");
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: auto auto;
+    height: 20px;
+    margin-bottom: 0;
+    margin-left: 3px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    border: none;
+    width: 20px;
+}

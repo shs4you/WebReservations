@@ -15,7 +15,7 @@
             <li><a href="#confirm_booking" data-toggle="tab">Confirm booking</a></li>
         </ul>
         <div class="tab-content">
-            <div class="summary">
+            <div class="summary well">
                 <p>
                     This is a summary.</p>
             </div>
@@ -23,35 +23,107 @@
                 Invalid action
             </div>
             <div class="tab-pane active" id="dates">
-                <p>
-                    Select dates</p>
-            </div>
-            <div class="tab-pane" id="room_rates">
-                <p>
-                    Select rooms &amp; rates</p>
-            </div>
-            <div class="tab-pane" id="enhance_stay">
-                <p>
-                    Enhance your stay</p>
-            </div>
-            <div class="tab-pane" id="guest_details">
-                <p>
-                    Enter guest details</p>
-            </div>
-            <div class="tab-pane" id="confirm_booking">
-                <p>
-                    Enter guest details</p>
-            </div>
-            <div class="bottom_nav pull-right">
-                <div class="btn-group">
-                    <button class="btn" id="back">
-                        Back</button>
-                    <button class="btn" id="next">
-                        Next</button>
+                <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="inputEmail">
+                        Arrival</label>
+                    <div class="controls">
+                        <input type="text" id="datepicker_arrival" placeholder="Arrival">
+                    </div>
                 </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputEmail">
+                        Departure</label>
+                    <div class="controls">
+                        <input type="text" id="datepicker_departure" placeholder="Departure">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">
+                        Number of Persons per Room
+                    </label>
+                    <div class="controls">
+                        Adult:
+                        <select class="span1" id="adult_count">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                        Children:
+                        <select class="span1" id="child_count">
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="row_fluid">
+                        <label class="control-label" for="group_code">
+                            Group code</label>
+                        <div class="controls">
+                            <input type="text" id="group_code" placeholder="Group code">
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="promo_code">
+                        Corporate/Promo code</label>
+                    <div class="controls">
+                        <input type="text" id="promo_code" placeholder="Corporate/Promo code">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="travel_id">
+                        Travel Industry ID</label>
+                    <div class="controls">
+                        <input type="text" id="travel_id" placeholder="Travel Industry ID">
+                    </div>
+                </div>
+                </form>
+            </div>
+        <div class="tab-pane" id="room_rates">
+            <p>
+                Select rooms &amp; rates</p>
+        </div>
+        <div class="tab-pane" id="enhance_stay">
+            <p>
+                Enhance your stay</p>
+        </div>
+        <div class="tab-pane" id="guest_details">
+            <p>
+                Enter guest details</p>
+        </div>
+        <div class="tab-pane" id="confirm_booking">
+            <p>
+                Enter guest details</p>
+        </div>
+        <div class="bottom_nav pull-right">
+            <div class="btn-group">
+                <button class="btn" id="back">
+                    Back</button>
+                <button class="btn" id="next">
+                    Next</button>
             </div>
         </div>
     </div>
 </div>
+</div>
 <div class="span1">
+</div>
+<!-- Modal -->
+<div id="reservation_modal" class="modal hide fade" tabindex="-1" role="dialog">
+    <div class="modal-body">
+        <div class="span12 center">
+            <div id="modal_text">
+                <p>
+                    Please wait....</p>
+            </div>
+        </div>
+    </div>
 </div>
