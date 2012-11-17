@@ -29,22 +29,22 @@ jQuery(document).ready(function ($) {
         show: false
     });
 
-    $('#datepicker_arrival').datepicker({
+    $('#datepickerArrival').datepicker({
         showOn: 'button',
         minDate: min_date,
-        onSelect: function(dateText, inst){
+        onSelect: function (dateText, inst) {
             min_date_departure = new Date(dateText);
-            $( '#datepicker_departure' ).datepicker( 'option', 'minDate', min_date_departure.addDays(1).asString());
+            $('#datepickerDeparture').datepicker('option', 'minDate', min_date_departure.addDays(1).asString());
         }
     });
 
-    $('#datepicker_departure').datepicker({
+    $('#datepickerDeparture').datepicker({
         showOn: 'button',
         minDate: min_date_departure
     });
 
     $('#launch_modal').click(function () {
-        
+
     });
 
     //Add checking befor proceeding with next step.
@@ -61,6 +61,10 @@ jQuery(document).ready(function ($) {
         else {
             return true;
         }
+    });
+
+    $('a[data-toggle="tab"]').click(function (e) {
+        return false;
     });
 
     //Add checking befor proceeding to the clicked step.
@@ -92,8 +96,7 @@ jQuery(document).ready(function ($) {
         var active_tab_id = get_active_tab();
         var next_tab = tabs.indexOf(active_tab_id) + 1;
         $('#reservation_modal').modal('show');
-        $.reservation(active_tab_id);
-        $('#steps li:eq(' + next_tab + ') a').tab('show');
+        var request_data = $.reservation(active_tab_id, next_tab);
     });
 
     //Logic for clicking the back button
@@ -141,7 +144,7 @@ function get_active_tab() {
 (function ($) {
     var methods = {
         init: function (options) {
-            return this;
+            methods
         },
 
         hide_modal: function(){
@@ -150,8 +153,17 @@ function get_active_tab() {
 
         dates: function (options) {
             reservation_status.room_rates = true;
-            methods.hide_modal();
-            return this;
+            $.getJSON("/home/getavailablerooms", $('#reservationForm').serialize())
+                .complete(function(data){
+                    methods.hide_modal();
+                })
+                .success(function(data){
+                    console.log(data);
+                     $('#steps li:eq(' + options + ') a').tab('show');
+                })
+                .error(function(data){
+                    console.log(data);
+                });
         },
 
         room_rates: function (options) {
@@ -159,25 +171,25 @@ function get_active_tab() {
             reservation_status.guest_details = true;
             reservation_status.confirm_booking = true;
             methods.hide_modal();
-            return this;
+            $('#steps li:eq(' + options + ') a').tab('show');
         },
 
         enhance_stay: function (options) {
             reservation_status.guest_details = true;
             methods.hide_modal();
-            return this;
+            $('#steps li:eq(' + options + ') a').tab('show');
         },
 
         guest_details: function (options) {
             reservation_status.confirm_booking = true;
             methods.hide_modal();
-            return this;
+            $('#steps li:eq(' + options + ') a').tab('show');
         },
 
         confirm_booking: function (options) {
             reservation_status.confirm_booking = true;
             methods.hide_modal();
-            return this;
+            $('#steps li:eq(' + options + ') a').tab('show');
         }
 
     };

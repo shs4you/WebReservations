@@ -23,19 +23,19 @@
                 Invalid action
             </div>
             <div class="tab-pane active" id="dates">
-                <form class="form-horizontal">
+                <form class="form-horizontal" id="reservationForm">
                 <div class="control-group">
-                    <label class="control-label" for="inputEmail">
+                    <label class="control-label" for="datepickerArrival">
                         Arrival</label>
                     <div class="controls">
-                        <input type="text" id="datepicker_arrival" placeholder="Arrival">
+                        <input type="text" id="datepickerArrival" name="datepickerArrival" placeholder="Arrival">
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="inputEmail">
+                    <label class="control-label" for="datepickerDeparture">
                         Departure</label>
                     <div class="controls">
-                        <input type="text" id="datepicker_departure" placeholder="Departure">
+                        <input type="text" id="datepickerDeparture" name="datepickerDeparture" placeholder="Departure">
                     </div>
                 </div>
                 <div class="control-group">
@@ -44,7 +44,7 @@
                     </label>
                     <div class="controls">
                         Adult:
-                        <select class="span1" id="adult_count">
+                        <select class="span1" id="adultCount">
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -52,7 +52,7 @@
                             <option>5</option>
                         </select>
                         Children:
-                        <select class="span1" id="child_count">
+                        <select class="span1" id="childCount">
                             <option>0</option>
                             <option>1</option>
                             <option>2</option>
@@ -64,25 +64,25 @@
                 </div>
                 <div class="control-group">
                     <div class="row_fluid">
-                        <label class="control-label" for="group_code">
+                        <label class="control-label" for="groupCode">
                             Group code</label>
                         <div class="controls">
-                            <input type="text" id="group_code" placeholder="Group code">
+                            <input type="text" id="groupCode" name="groupCode" placeholder="Group code">
                         </div>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="promo_code">
+                    <label class="control-label" for="promoCode">
                         Corporate/Promo code</label>
                     <div class="controls">
-                        <input type="text" id="promo_code" placeholder="Corporate/Promo code">
+                        <input type="text" id="promoCode" name="promoCode" placeholder="Corporate/Promo code">
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="travel_id">
+                    <label class="control-label" for="travelId">
                         Travel Industry ID</label>
                     <div class="controls">
-                        <input type="text" id="travel_id" placeholder="Travel Industry ID">
+                        <input type="text" id="travelId" name="travelId" placeholder="Travel Industry ID">
                     </div>
                 </div>
                 </form>

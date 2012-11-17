@@ -23,6 +23,9 @@ namespace WebReservations.Lib
         protected Availability.TimeSpan timeSpan;
         protected MinMaxRate rate;
         protected AvailabilityResponse response;
+        protected Exception errors;
+        protected List<Object> final_response = new List<Object>();
+        public Object tempObj;
 
 
         public AvailabilityService()
@@ -41,9 +44,10 @@ namespace WebReservations.Lib
             this.timeSpan = new Availability.TimeSpan();
             this.rate = new MinMaxRate();
             this.response = new AvailabilityResponse();
+            this.tempObj = new Object();
         }
 
-        public AvailabilityResponse GetAvailableRooms(DateTime startDate, DateTime endDate, int numRoom = 1, int numAdult = 1, int numChild = 0, string rateType = "normal", string rateCode = "", string currencyCode = "PHP", string chainCode = "CHA", string hotelCode = "WCCH")
+        public Object GetAvailableRooms(DateTime startDate, DateTime endDate, int numRoom = 1, int numAdult = 1, int numChild = 0, string rateType = "normal", string rateCode = "", string currencyCode = "PHP", string chainCode = "CHA", string hotelCode = "WCCH")
         {
             this.origin.entityID = System.Configuration.ConfigurationManager.AppSettings["OriginEntityId"];
             this.origin.systemType = System.Configuration.ConfigurationManager.AppSettings["OriginSystemType"];
@@ -90,10 +94,10 @@ namespace WebReservations.Lib
             this.segment.RoomStayCandidates[0] = roomStay;
             this.segment.RateRange = rate;
             this.segment.StayDateRange = timeSpan;
-            
+
             switch (rateType)
             {
-               case "corporate":
+                case "corporate":
                     this.segment.RatePlanCandidates = new Availability.RatePlanCandidate[1];
                     this.segment.RatePlanCandidates[0] = new Availability.RatePlanCandidate();
                     this.segment.RatePlanCandidates[0].qualifyingIdType = "CORPORATE";
@@ -116,9 +120,45 @@ namespace WebReservations.Lib
             }
 
             this.request.AvailRequestSegment[0] = segment;
-            response = this.response = cli.Availability(ref og, request);
+            try
+            {
+                response = this.response = cli.Availability(ref og, request);
+            }
+            catch (Exception e)
+            {
+                this.errors = e;
+            }
 
-            return response;
+
+            if (response.Result.GDSError == null)
+            {
+                var temp_result = new
+                {
+                    statusCode = 0,
+                    statusMessage = "",
+                    roomTypes = response.AvailResponseSegments[0].RoomStayList[0].RoomTypes,
+                    roomTypesCount = response.AvailResponseSegments[0].RoomStayList[0].RoomTypes.Count<RoomType>(),
+                    roomRates = response.AvailResponseSegments[0].RoomStayList[0].RoomRates,
+                    roomRatesCount = response.AvailResponseSegments[0].RoomStayList[0].RoomRates.Count<RoomRate>()
+                };
+                this.tempObj = temp_result;
+            }
+            else
+            {
+                var temp_result = new
+                {
+                    statusCode = response.Result.GDSError.errorCode,
+                    statusMessage = response.Result.GDSError.Value,
+                    roomTypes = "",
+                    roomTypesCount = "",
+                    roomRates = "",
+                    roomRatesCount = ""
+                };
+                this.tempObj = temp_result;
+            }
+            this.final_response.Add(this.tempObj);
+            //return this.final_response;
+            return this.tempObj;
         }
     }
 }
