@@ -20,11 +20,14 @@ namespace WebReservations.Lib
         protected HotelReference hotelRef;
         protected RoomStayCandidate roomStay;
         protected AvailabilityRequest request;
+        protected FetchAvailablePackagesRequest packageRequest;
         protected Availability.TimeSpan timeSpan;
         protected MinMaxRate rate;
         protected AvailabilityResponse response;
+        protected FetchAvailablePackagesResponse packageResponse;
         protected Exception errors;
-        protected List<Object> final_response = new List<Object>();
+        protected List<Object> finalResponse = new List<Object>();
+        protected RatePlanCandidate ratePlan;
         public Object tempObj;
 
 
@@ -41,13 +44,16 @@ namespace WebReservations.Lib
             this.hotelRef = new HotelReference();
             this.roomStay = new RoomStayCandidate();
             this.request = new AvailabilityRequest();
+            this.packageRequest = new FetchAvailablePackagesRequest();
             this.timeSpan = new Availability.TimeSpan();
             this.rate = new MinMaxRate();
             this.response = new AvailabilityResponse();
+            this.packageResponse = new FetchAvailablePackagesResponse();
+            this.ratePlan = new RatePlanCandidate();
             this.tempObj = new Object();
         }
 
-        public Object GetAvailableRooms(DateTime startDate, DateTime endDate, int numRoom = 1, int numAdult = 1, int numChild = 0, string rateType = "normal", string rateCode = "", string currencyCode = "PHP", string chainCode = "CHA", string hotelCode = "WCCH")
+        protected void _InitializeHeader()
         {
             this.origin.entityID = System.Configuration.ConfigurationManager.AppSettings["OriginEntityId"];
             this.origin.systemType = System.Configuration.ConfigurationManager.AppSettings["OriginSystemType"];
@@ -61,11 +67,36 @@ namespace WebReservations.Lib
             this.og.transactionID = transId.ToString();
             this.og.timeStamp = DateTime.Now;
             this.og.timeStampSpecified = true;
+        }
+
+        public void _InitializeTimeSpan(DateTime startDate, DateTime endDate)
+        {
+            this.timeSpan.StartDate = startDate;
+            this.timeSpan.Item = endDate; 
+        }
+
+        public void _InitializeHotelRef(string chainCode, string hotelCode)
+        {
+            this.hotelRef.chainCode = chainCode;
+            this.hotelRef.hotelCode = hotelCode;
+            this.hotelSearch.HotelRef = hotelRef;
+        }
+
+        public Object GetAvailableRooms(DateTime startDate, DateTime endDate, int numRoom = 1, int numAdult = 1, int numChild = 0, string rateType = "normal", string rateCode = "", string currencyCode = "PHP", string chainCode = "CHA", string hotelCode = "WCCH")
+        {
+
+            this._InitializeHeader();
 
             this.request.summaryOnly = true;
 
-            this.timeSpan.StartDate = startDate;
-            this.timeSpan.Item = endDate;
+            /**/
+            this.ratePlan.ratePlanCode = "OWCCH";
+            this.roomStay.roomTypeCode = "SUPK";
+            this.segment.RatePlanCandidates = new RatePlanCandidate[1];
+            this.segment.RatePlanCandidates[0] = this.ratePlan;
+            /**/
+
+            this._InitializeTimeSpan(startDate, endDate);
 
             this.rate.currencyCode = currencyCode;
             this.rate.minimumRateSpecified = false;
@@ -80,9 +111,7 @@ namespace WebReservations.Lib
             this.segment.availReqType = AvailRequestType.Room;
 
 
-            this.hotelRef.chainCode = chainCode;
-            this.hotelRef.hotelCode = hotelCode;
-            this.hotelSearch.HotelRef = hotelRef;
+            this._InitializeHotelRef(chainCode, hotelCode);
 
             this.roomStay.invBlockCode = null;
 
@@ -90,10 +119,10 @@ namespace WebReservations.Lib
             this.segment.RoomStayCandidates = new RoomStayCandidate[1];
             this.request.AvailRequestSegment = new AvailRequestSegment[1];
 
-            this.segment.HotelSearchCriteria[0] = hotelSearch;
-            this.segment.RoomStayCandidates[0] = roomStay;
-            this.segment.RateRange = rate;
-            this.segment.StayDateRange = timeSpan;
+            this.segment.HotelSearchCriteria[0] = this.hotelSearch;
+            this.segment.RoomStayCandidates[0] = this.roomStay;
+            this.segment.RateRange = this.rate;
+            this.segment.StayDateRange = this.timeSpan;
 
             switch (rateType)
             {
@@ -119,10 +148,10 @@ namespace WebReservations.Lib
                     break;
             }
 
-            this.request.AvailRequestSegment[0] = segment;
+            this.request.AvailRequestSegment[0] = this.segment;
             try
             {
-                response = this.response = cli.Availability(ref og, request);
+                response = this.response = cli.Availability(ref this.og, this.request);
             }
             catch (Exception e)
             {
@@ -156,9 +185,32 @@ namespace WebReservations.Lib
                 };
                 this.tempObj = temp_result;
             }
-            this.final_response.Add(this.tempObj);
-            //return this.final_response;
-            return this.tempObj;
+            this.finalResponse.Add(this.tempObj);
+            //return this.finalResponse;
+            //return this.tempObj;
+            return response;
+        }
+
+        public Object GetAvailablePackages(DateTime startDate, DateTime endDate, int numRoom = 1, int numAdult = 1, int numChild = 0, string chainCode = "CHA", string hotelCode = "WCCH")
+        {
+            this._InitializeHeader();
+            this._InitializeHotelRef(chainCode, hotelCode);
+            this._InitializeTimeSpan(startDate, endDate);
+
+            this.packageRequest.StayDateRange = timeSpan;
+            this.packageRequest.HotelReference = hotelRef;
+
+            this.packageRequest.NumberOfRooms = numRoom;
+            this.packageRequest.NumberOfRoomsSpecified = true;
+
+            this.packageRequest.NumberOfAdults = numAdult;
+            this.packageRequest.NumberOfAdultsSpecified = true;
+
+            this.packageRequest.NumberOfChildren = numChild;
+            this.packageRequest.NumberOfChildrenSpecified = true;
+
+            this.packageResponse = cli.FetchAvailablePackages(ref this.og, this.packageRequest);
+            return this.packageResponse;
         }
     }
 }

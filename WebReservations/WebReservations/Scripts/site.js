@@ -14,6 +14,7 @@ var reservation_status;
 var tabs = ['dates', 'room_rates', 'enhance_stay', 'guest_details', 'confirm_booking'];
 var min_date = 1;
 var min_date_departure = 1;
+var reservation_data;
 
 jQuery(document).ready(function ($) {
     $('.body').fadeIn(500);
@@ -22,6 +23,7 @@ jQuery(document).ready(function ($) {
     reservation_data = $.cookie('reservation_data') ? $.cookie('reservation_data') : false;
     reservation_status = $.cookie('reservation_status') ? $.cookie('reservation_status') : false;
     reservation_status = { 'dates': true };
+    reservation_data = {'test': 'test'};
 
     $('#reservation_modal').modal({
         keyboard: false,
@@ -159,6 +161,17 @@ function get_active_tab() {
                 })
                 .success(function(data){
                     console.log(data);
+                    console.log(reservation_data);
+                    reservation_data.stayDateRange = {
+                        'startDate': $('#datepickerArrival').val(),
+                        'endDate': $('#datepickerDeparture').val(),
+                        'numAdult': $('#adultCount').val(),
+                        'numChild': $('#childCount').val(),
+                        'groupCode': $('#groupCode').val(),
+                        'promoCode': $('#promoCode').val(),
+                        'travelId': $('#travelId').val()
+                    };
+                    console.log(reservation_data);
                      $('#steps li:eq(' + options + ') a').tab('show');
                 })
                 .error(function(data){

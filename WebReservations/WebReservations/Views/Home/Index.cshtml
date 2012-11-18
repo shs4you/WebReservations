@@ -1,7 +1,4 @@
-﻿@{
-    ViewBag.Title = "Home";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿@{ ViewBag.Title = "Home"; Layout = "~/Views/Shared/_Layout.cshtml"; }
 <div class="span1">
 </div>
 <div class="span10">
@@ -23,7 +20,7 @@
                 Invalid action
             </div>
             <div class="tab-pane active" id="dates">
-                <form class="form-horizontal" id="reservationForm">
+                <form class="form-horizontal" id="datesForm">
                 <div class="control-group">
                     <label class="control-label" for="datepickerArrival">
                         Arrival</label>
@@ -87,32 +84,32 @@
                 </div>
                 </form>
             </div>
-        <div class="tab-pane" id="room_rates">
-            <p>
-                Select rooms &amp; rates</p>
-        </div>
-        <div class="tab-pane" id="enhance_stay">
-            <p>
-                Enhance your stay</p>
-        </div>
-        <div class="tab-pane" id="guest_details">
-            <p>
-                Enter guest details</p>
-        </div>
-        <div class="tab-pane" id="confirm_booking">
-            <p>
-                Enter guest details</p>
-        </div>
-        <div class="bottom_nav pull-right">
-            <div class="btn-group">
-                <button class="btn" id="back">
-                    Back</button>
-                <button class="btn" id="next">
-                    Next</button>
+            <div class="tab-pane" id="room_rates">
+                <p>
+                    Select rooms &amp; rates</p>
+            </div>
+            <div class="tab-pane" id="enhance_stay">
+                <p>
+                    Enhance your stay</p>
+            </div>
+            <div class="tab-pane" id="guest_details">
+                <p>
+                    Enter guest details</p>
+            </div>
+            <div class="tab-pane" id="confirm_booking">
+                <p>
+                    Enter guest details</p>
+            </div>
+            <div class="bottom_nav pull-right">
+                <div class="btn-group">
+                    <button class="btn" id="back">
+                        Back</button>
+                    <button class="btn" id="next">
+                        Next</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 <div class="span1">
 </div>
