@@ -89,7 +89,7 @@ namespace WebReservations.Lib
 
             this.request.summaryOnly = true;
 
-            /**/
+            /** /
             this.ratePlan.ratePlanCode = "OWCCH";
             this.roomStay.roomTypeCode = "SUPK";
             this.segment.RatePlanCandidates = new RatePlanCandidate[1];

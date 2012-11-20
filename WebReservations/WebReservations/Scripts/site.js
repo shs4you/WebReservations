@@ -155,7 +155,7 @@ function get_active_tab() {
 
         dates: function (options) {
             reservation_status.room_rates = true;
-            $.getJSON("/home/getavailablerooms", $('#reservationForm').serialize())
+            $.getJSON("/home/getavailablerooms", $('#datesForm').serialize())
                 .complete(function(data){
                     methods.hide_modal();
                 })
