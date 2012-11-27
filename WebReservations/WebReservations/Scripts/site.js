@@ -10,22 +10,26 @@ if (typeof window.console == 'undefined') {
     };
 }
 
-var reservation_status;
-var tabs = ['dates', 'room_rates', 'enhance_stay', 'guest_details', 'confirm_booking'];
-var min_date = 1;
-var min_date_departure = 1;
-var reservation_data;
+var reservationStatus;
+var tabs = ['dates', 'roomRates', 'enhanceStay', 'guestDetails', 'confirmBooking'];
+var minDate = 1;
+var minDateDeparture = 1;
+var reservationData;
 
 jQuery(document).ready(function ($) {
     $('.body').fadeIn(500);
 
-    //Assigning of saved data from cookie
-    reservation_data = $.cookie('reservation_data') ? $.cookie('reservation_data') : false;
-    reservation_status = $.cookie('reservation_status') ? $.cookie('reservation_status') : false;
-    reservation_status = { 'dates': true };
-    reservation_data = {'test': 'test'};
+    $.ajaxSetup({
+        cache: false
+    });
 
-    $('#reservation_modal').modal({
+    //Assigning of saved data from cookie
+    reservationData = $.cookie('reservationData') ? $.cookie('reservationData') : false;
+    reservationStatus = $.cookie('reservationStatus') ? $.cookie('reservationStatus') : false;
+    reservationStatus = { 'dates': true };
+    reservationData = { 'test': 'test' };
+
+    $('#reservationModal').modal({
         keyboard: false,
         backdrop: 'static',
         show: false
@@ -33,19 +37,19 @@ jQuery(document).ready(function ($) {
 
     $('#datepickerArrival').datepicker({
         showOn: 'button',
-        minDate: min_date,
+        minDate: minDate,
         onSelect: function (dateText, inst) {
-            min_date_departure = new Date(dateText);
-            $('#datepickerDeparture').datepicker('option', 'minDate', min_date_departure.addDays(1).asString());
+            minDateDeparture = new Date(dateText);
+            $('#datepickerDeparture').datepicker('option', 'minDate', minDateDeparture.addDays(1).asString());
         }
     });
 
     $('#datepickerDeparture').datepicker({
         showOn: 'button',
-        minDate: min_date_departure
+        minDate: minDateDeparture
     });
 
-    $('#launch_modal').click(function () {
+    $('#launchModal').click(function () {
 
     });
 
@@ -53,8 +57,8 @@ jQuery(document).ready(function ($) {
     $('a[data-toggle="tab"]').on('show', function (e) {
         var target = $(e.target); // activated tab
         var related = $(e.relatedTarget); // previous tab
-        var target_href = target.attr('href').replace('#', '');
-        if (!check_status(target_href)) {
+        var targetHref = target.attr('href').replace('#', '');
+        if (!checkStatus(targetHref)) {
             //Show alert
             $('.alert').show();
             $('.alert').fadeOut(1500);
@@ -72,19 +76,19 @@ jQuery(document).ready(function ($) {
     //Add checking befor proceeding to the clicked step.
     /*
     $('a[data-toggle="tab"]').click(function (e) {
-    var target_href = $(e.target).attr('href').replace('#', '');
-    console.log(target_href);
-    if(target_href == get_active_tab()){
+    var targetHref = $(e.target).attr('href').replace('#', '');
+    console.log(targetHref);
+    if(targetHref == getActiveTab()){
     return true;
     }
-    if (!check_status(target_href)) {
+    if (!checkStatus(targetHref)) {
     //Show alert
     $('.alert').show();
     $('.alert').fadeOut(1500);
     return false;
     }
-    else if(get_active_tab() != 'confirm_booking') {
-    $.reservation(get_active_tab());
+    else if(getActiveTab() != 'confirmBooking') {
+    $.reservation(getActiveTab());
     return true;
     }
     else{
@@ -95,18 +99,18 @@ jQuery(document).ready(function ($) {
 
     //Logic for clicking the next button
     $('#next').click(function () {
-        var active_tab_id = get_active_tab();
-        var next_tab = tabs.indexOf(active_tab_id) + 1;
-        $('#reservation_modal').modal('show');
-        var request_data = $.reservation(active_tab_id, next_tab);
+        var activeTabId = getActiveTab();
+        var nextTab = tabs.indexOf(activeTabId) + 1;
+        $('#reservationModal').modal('show');
+        var requestData = $.reservation(activeTabId, nextTab);
     });
 
     //Logic for clicking the back button
     $('#back').click(function () {
-        var active_tab_id = get_active_tab();
-        var prev_tab = tabs.indexOf(active_tab_id) - 1;
-        if (prev_tab < 0) return;
-        $('#steps li:eq(' + prev_tab + ') a').tab('show');
+        var activeTabId = getActiveTab();
+        var prevTab = tabs.indexOf(activeTabId) - 1;
+        if (prevTab < 0) return;
+        $('#steps li:eq(' + prevTab + ') a').tab('show');
     });
 });
 
@@ -118,13 +122,13 @@ jQuery(document).ready(function ($) {
 * @author: jcapagcuan
 *
 */
-function check_status(target) {
-    current_status = false;
-    if (reservation_status[target] != undefined && reservation_status[target] != false) {
-        current_status = true;
+function checkStatus(target) {
+    currentStatus = false;
+    if (reservationStatus[target] != undefined && reservationStatus[target] != false) {
+        currentStatus = true;
     }
 
-    return current_status;
+    return currentStatus;
 }
 
 /*
@@ -133,7 +137,7 @@ function check_status(target) {
 * @return string
 * @author: jcapagcuan
 */
-function get_active_tab() {
+function getActiveTab() {
     return $('#steps li.active a').attr('href').replace('#', '');
 }
 
@@ -141,7 +145,7 @@ function get_active_tab() {
 /*
 * Handler for the functions/logic/validations per step
 * @params options mixed
-* @return object
+* 
 */
 (function ($) {
     var methods = {
@@ -149,20 +153,18 @@ function get_active_tab() {
             methods
         },
 
-        hide_modal: function(){
-            $('#reservation_modal').modal('hide');
+        hideModal: function(){
+            $('#reservationModal').modal('hide');
         },
 
         dates: function (options) {
-            reservation_status.room_rates = true;
+            reservationStatus.roomRates = true;
             $.getJSON("/home/getavailablerooms", $('#datesForm').serialize())
                 .complete(function(data){
-                    methods.hide_modal();
+                    methods.hideModal();
                 })
                 .success(function(data){
-                    console.log(data);
-                    console.log(reservation_data);
-                    reservation_data.stayDateRange = {
+                    reservationData.stayDateRange = {
                         'startDate': $('#datepickerArrival').val(),
                         'endDate': $('#datepickerDeparture').val(),
                         'numAdult': $('#adultCount').val(),
@@ -171,37 +173,51 @@ function get_active_tab() {
                         'promoCode': $('#promoCode').val(),
                         'travelId': $('#travelId').val()
                     };
-                    console.log(reservation_data);
-                     $('#steps li:eq(' + options + ') a').tab('show');
+                    if(data.statusCode == 0){
+                        dataRoomRates = {};
+                        $.each(data.roomRates, function(index, value){
+                            ratePlanCode = value.ratePlanCode;
+                            rates = value.Total.Value;
+                            if(typeof dataRoomRates[value.roomTypeCode] == 'undefined'){
+                                dataRoomRates[value.roomTypeCode] = {};
+                            }
+                            dataRoomRates[value.roomTypeCode][ratePlanCode] = rates;
+                        });
+                        $('#steps li:eq(' + options + ') a').tab('show');
+                    }
+                    else{
+                        
+                    }
+                     
                 })
                 .error(function(data){
                     console.log(data);
                 });
         },
 
-        room_rates: function (options) {
-            reservation_status.enhance_stay = true;
-            reservation_status.guest_details = true;
-            reservation_status.confirm_booking = true;
-            methods.hide_modal();
+        roomRates: function (options) {
+            reservationStatus.enhanceStay = true;
+            reservationStatus.guestDetails = true;
+            reservationStatus.confirmBooking = true;
+            methods.hideModal();
             $('#steps li:eq(' + options + ') a').tab('show');
         },
 
-        enhance_stay: function (options) {
-            reservation_status.guest_details = true;
-            methods.hide_modal();
+        enhanceStay: function (options) {
+            reservationStatus.guestDetails = true;
+            methods.hideModal();
             $('#steps li:eq(' + options + ') a').tab('show');
         },
 
-        guest_details: function (options) {
-            reservation_status.confirm_booking = true;
-            methods.hide_modal();
+        guestDetails: function (options) {
+            reservationStatus.confirmBooking = true;
+            methods.hideModal();
             $('#steps li:eq(' + options + ') a').tab('show');
         },
 
-        confirm_booking: function (options) {
-            reservation_status.confirm_booking = true;
-            methods.hide_modal();
+        confirmBooking: function (options) {
+            reservationStatus.confirmBooking = true;
+            methods.hideModal();
             $('#steps li:eq(' + options + ') a').tab('show');
         }
 

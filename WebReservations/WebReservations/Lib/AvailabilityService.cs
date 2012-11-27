@@ -187,8 +187,8 @@ namespace WebReservations.Lib
             }
             this.finalResponse.Add(this.tempObj);
             //return this.finalResponse;
-            //return this.tempObj;
-            return response;
+            return this.tempObj;
+            //return response;
         }
 
         public Object GetAvailablePackages(DateTime startDate, DateTime endDate, int numRoom = 1, int numAdult = 1, int numChild = 0, string chainCode = "CHA", string hotelCode = "WCCH")

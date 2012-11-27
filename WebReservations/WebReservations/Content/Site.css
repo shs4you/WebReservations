@@ -10,12 +10,12 @@
     display: none;
 }
 
-.reservation_container .nav
+.reservationContainer .nav
 {
     margin-bottom: 0px;
 }
 
-.reservation_container .tab-content
+.reservationContainer .tab-content
 {
     padding: 18px 12px;
     border-left: 1px solid #DDD;
