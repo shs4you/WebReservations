@@ -70,9 +70,15 @@
     </Compile>
     <Compile Include="Lib\AvailabilityService.cs" />
     <Compile Include="Lib\Helper.cs" />
+    <Compile Include="Lib\InformationService.cs" />
     <Compile Include="Models\GetAvailableRooms.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\Availability\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Information\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -135,6 +141,13 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\Information\information.disco" />
+    <None Include="Service References\Information\configuration91.svcinfo" />
+    <None Include="Service References\Information\configuration.svcinfo" />
+    <None Include="Service References\Information\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -188,6 +201,25 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <Content Include="Views\Home\Test.cshtml" />
+    <None Include="Service References\Information\information.wsdl" />
+    <None Include="Service References\Information\WebReservations.Information.ChainInformationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Information\WebReservations.Information.CurrencyConverterResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Information\WebReservations.Information.HotelInformationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Information\WebReservations.Information.LovResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Information\WebReservations.Information.OGHeader.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Information\WebReservations.Information.RateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -201,6 +233,7 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\Availability\" />
+    <WCFMetadataStorage Include="Service References\Information\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\Availability\availability.wsdl" />

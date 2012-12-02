@@ -7,6 +7,7 @@ using System.Diagnostics;
 using WebReservations.Lib;
 using WebReservations.Availability;
 using WebReservations.Models;
+using WebReservations.Information;
 
 namespace WebReservations.Controllers
 {
@@ -41,7 +42,7 @@ namespace WebReservations.Controllers
             Object response = avail.GetAvailablePackages(DateTime.Parse("2012-12-19"), DateTime.Parse("2012-12-20").AddDays(1));
             return Json(response, JsonRequestBehavior.AllowGet);
         }
-
+        /*
         public JsonResult TestItemGroups()
         {
             AvailabilityServiceSoapClient service = new AvailabilityServiceSoapClient();
@@ -113,9 +114,31 @@ namespace WebReservations.Controllers
 
             itemRequest.HotelReference = hotelRef;
             itemRequest.InventoryItem
-             * */
+             * * /
             //itemRequest.
             return Json(itemGroupResp, JsonRequestBehavior.AllowGet);
+        }
+        */
+
+        public JsonResult TestQueryRoomTypes()
+        {
+            InformationService infoService = new InformationService();
+            LovResponse response = infoService.getRoomTypes();
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult TestQueryFeautures()
+        {
+            InformationService infoService = new InformationService();
+            LovResponse response = infoService.getFeatures();
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult TestGetRates()
+        {
+            InformationService infoService = new InformationService();
+            RateResponse response = infoService.getRates(DateTime.Parse("2012-12-19"), DateTime.Parse("2012-12-20").AddDays(1));
+            return Json(response, JsonRequestBehavior.AllowGet);
         }
 
         //

@@ -38,6 +38,8 @@ jQuery(document).ready(function ($) {
     $('#datepickerArrival').datepicker({
         showOn: 'button',
         minDate: minDate,
+        altField: '#datepickerArrivalText',
+        altFormat: 'DD, MM dd, yy',
         onSelect: function (dateText, inst) {
             minDateDeparture = new Date(dateText);
             $('#datepickerDeparture').datepicker('option', 'minDate', minDateDeparture.addDays(1).asString());
@@ -46,6 +48,8 @@ jQuery(document).ready(function ($) {
 
     $('#datepickerDeparture').datepicker({
         showOn: 'button',
+        altField: '#datepickerDepartureText',
+        altFormat: 'DD, MM dd, yy',
         minDate: minDateDeparture
     });
 
@@ -164,9 +168,13 @@ function getActiveTab() {
                     methods.hideModal();
                 })
                 .success(function(data){
+                    var numNights = (Date.fromString($('#datepickerDeparture').val()) - Date.fromString($('#datepickerArrival').val()))/86400000;
                     reservationData.stayDateRange = {
                         'startDate': $('#datepickerArrival').val(),
+                        'startDateText': $('#datepickerArrivalText').val(),
                         'endDate': $('#datepickerDeparture').val(),
+                        'endDateText': $('#datepickerDepartureText').val(),
+                        'numNights': numNights,
                         'numAdult': $('#adultCount').val(),
                         'numChild': $('#childCount').val(),
                         'groupCode': $('#groupCode').val(),
@@ -175,14 +183,27 @@ function getActiveTab() {
                     };
                     if(data.statusCode == 0){
                         dataRoomRates = {};
+                        dataRoomtypes = data.roomTypes;
                         $.each(data.roomRates, function(index, value){
                             ratePlanCode = value.ratePlanCode;
                             rates = value.Total.Value;
                             if(typeof dataRoomRates[value.roomTypeCode] == 'undefined'){
                                 dataRoomRates[value.roomTypeCode] = {};
                             }
-                            dataRoomRates[value.roomTypeCode][ratePlanCode] = rates;
+                            if(typeof dataRoomRates[value.roomTypeCode]['rates'] == 'undefined'){
+                                dataRoomRates[value.roomTypeCode]['rates'] = {}
+                            }
+                            dataRoomRates[value.roomTypeCode]['rates'][value.ratePlanCode] = rates;
+                            $.each(dataRoomtypes, function(roomTypeIndex, roomTypeValue){
+                                if(value.roomTypeCode == roomTypeValue.roomTypeCode){
+                                    dataRoomRates[value.roomTypeCode]['description'] = roomTypeValue.RoomTypeDescription.Items[0].Value;
+                                }
+                            });
+                            
+                            reservationData['dataRoomRates'] = dataRoomRates;
                         });
+                        methods.buildStaySummary();
+                        console.log(dataRoomRates);
                         $('#steps li:eq(' + options + ') a').tab('show');
                     }
                     else{
@@ -219,6 +240,16 @@ function getActiveTab() {
             reservationStatus.confirmBooking = true;
             methods.hideModal();
             $('#steps li:eq(' + options + ') a').tab('show');
+        },
+
+        buildStaySummary: function(data){
+            if(typeof reservationData.stayDateRange != 'undefined'){
+                $('.arrivalDate [class*="span"]:last-child').html(reservationData.stayDateRange.startDateText).parent('div').show();
+                $('.departureDate [class*="span"]:last-child').html(reservationData.stayDateRange.endDateText).parent('div').show();
+                $('.numNights [class*="span"]:last-child').html(reservationData.stayDateRange.numNights).parent('div').show();
+                $('.numRooms [class*="span"]:last-child').html('1').parent('div').show();
+                $('.numAdultsChildren [class*="span"]:last-child').html(reservationData.stayDateRange.numAdult + '/' + reservationData.stayDateRange.numChild).parent('div').show();
+            }
         }
 
     };
