@@ -197,11 +197,14 @@ function getActiveTab() {
                             $.each(dataRoomtypes, function(roomTypeIndex, roomTypeValue){
                                 if(value.roomTypeCode == roomTypeValue.roomTypeCode){
                                     dataRoomRates[value.roomTypeCode]['description'] = roomTypeValue.RoomTypeDescription.Items[0].Value;
+                                    dataRoomRates[value.roomTypeCode]['numberOfUnits'] = roomTypeValue.numberOfUnits;
                                 }
                             });
                             
                             reservationData['dataRoomRates'] = dataRoomRates;
                         });
+
+
                         methods.buildStaySummary();
                         console.log(dataRoomRates);
                         $('#steps li:eq(' + options + ') a').tab('show');

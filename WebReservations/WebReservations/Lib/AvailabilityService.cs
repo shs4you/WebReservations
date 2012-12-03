@@ -99,9 +99,13 @@ namespace WebReservations.Lib
             this._InitializeTimeSpan(startDate, endDate);
 
             this.rate.currencyCode = currencyCode;
-            this.rate.minimumRateSpecified = false;
-            this.rate.maximumRateSpecified = false;
-
+            this.rate.minimumRateSpecified = true;
+            this.rate.maximumRateSpecified = true;
+            this.rate.decimals = 2;
+            this.rate.decimalsSpecified = true;
+            this.rate.minimumRate = 1.00;
+            this.rate.maximumRate = 1000000.00;
+            
             this.segment.numberOfRooms = numRoom;
             this.segment.numberOfRoomsSpecified = true;
             this.segment.totalNumberOfGuests = numAdult;
