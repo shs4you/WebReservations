@@ -86,9 +86,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\bootstrap.css" />
+    <Content Include="Content\themes\base\bootstrap.min.css" />
     <Content Include="Content\themes\base\images\calendar.png" />
     <Content Include="Content\themes\base\images\DELK.png" />
     <Content Include="Content\themes\base\images\DELT.png" />
+    <Content Include="Content\themes\base\images\glyphicons-halflings-white.png" />
+    <Content Include="Content\themes\base\images\glyphicons-halflings.png" />
     <Content Include="Content\themes\base\images\SUPK.png" />
     <Content Include="Content\themes\base\images\SUPT.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -123,6 +126,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\backbone.js" />
     <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\date.js" />
     <Content Include="Scripts\jquery-1.5.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.5.1.js" />

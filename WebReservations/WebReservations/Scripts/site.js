@@ -116,6 +116,11 @@ jQuery(document).ready(function ($) {
         if (prevTab < 0) return;
         $('#steps li:eq(' + prevTab + ') a').tab('show');
     });
+
+    $('.roomRow button.active').live('click', function (e) {
+        $(this).removeClass('active');
+        e.stopImmediatePropagation();
+    });
 });
 
 
@@ -204,7 +209,28 @@ function getActiveTab() {
                             reservationData['dataRoomRates'] = dataRoomRates;
                         });
 
-
+                        var roomTemp = $('#rowTemplate');
+                        //roomTemp = $(roomTemp);
+                        finalRoomTemplate = $('<ul class="media-list" />');
+                        $.each(dataRoomRates, function(index, value){
+                            //console.log(value.rates);
+                            $.each(value.rates, function(ratesIndex, ratesValue){
+                                $('img.media-object', roomTemp).attr('src', '/content/themes/base/images/' + index + '.png');
+                                //console.log($('img.media-object', roomTemp).attr('src'));
+                                //console.log($('div.media-body.media-heading', roomTemp).html());
+                                $('div.media-body h4.media-heading', roomTemp).html(value.description);
+                                //console.log($('div.roomDesc p', roomTemp).html());
+                                $('div.roomDesc p', roomTemp).html(ratesValue);
+                                $('div.roomButton button', roomTemp).attr('data-room', index);
+                                var liTemplate = $('<li class="media" />');
+                                var roomClone = roomTemp.clone();
+                                console.log(roomClone.html());
+                                $(liTemplate).append(roomClone.html());
+                                $(finalRoomTemplate).append(liTemplate);
+                                //console.log(finalRoomTemplate.html());
+                            });
+                        });
+                        $('.roomRow').append($(finalRoomTemplate).clone());
                         methods.buildStaySummary();
                         console.log(dataRoomRates);
                         $('#steps li:eq(' + options + ') a').tab('show');
