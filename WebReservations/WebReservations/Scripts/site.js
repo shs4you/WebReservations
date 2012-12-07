@@ -249,6 +249,24 @@ function getActiveTab() {
             reservationStatus.enhanceStay = true;
             reservationStatus.guestDetails = true;
             reservationStatus.confirmBooking = true;
+            $.getJSON("/home/getavailablepackages", $('#datesForm').serialize())
+                .complete(function(data){
+                    methods.hideModal();
+                })
+                .success(function(data){
+                    if(data.statusCode == 0){
+                        methods.buildStaySummary();
+                        console.log(data);
+                        $('#steps li:eq(' + options + ') a').tab('show');
+                    }
+                    else{
+                        
+                    }
+                     
+                })
+                .error(function(data){
+                    console.log(data);
+                });
             methods.hideModal();
             $('#steps li:eq(' + options + ') a').tab('show');
         },

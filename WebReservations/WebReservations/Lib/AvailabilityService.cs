@@ -213,8 +213,37 @@ namespace WebReservations.Lib
             this.packageRequest.NumberOfChildren = numChild;
             this.packageRequest.NumberOfChildrenSpecified = true;
 
-            this.packageResponse = cli.FetchAvailablePackages(ref this.og, this.packageRequest);
-            return this.packageResponse;
+            
+            try
+            {
+                this.packageResponse = cli.FetchAvailablePackages(ref this.og, this.packageRequest);
+            }
+            catch (Exception e)
+            {
+                this.errors = e;
+            }
+            if (this.packageResponse.Result.GDSError == null)
+            {
+                var temp_result = new
+                {
+                    statusCode = 0,
+                    statusMessage = "",
+                    packageElements = this.packageResponse.PackageElements
+                };
+                this.tempObj = temp_result;
+            }
+            else
+            {
+                var temp_result = new
+                {
+                    statusCode = this.packageResponse.Result.GDSError.errorCode,
+                    statusMessage = this.packageResponse.Result.GDSError.Value,
+                    packageElements = ""
+                };
+                this.tempObj = temp_result;
+            }
+            //return this.packageResponse;
+            return this.tempObj;
         }
     }
 }

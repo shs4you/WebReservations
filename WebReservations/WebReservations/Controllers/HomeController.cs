@@ -15,6 +15,8 @@ namespace WebReservations.Controllers
     {
         //
         // GET: /Home/
+        public AvailabilityService avail = new AvailabilityService();
+        public InformationService infoService = new InformationService();
 
         public ActionResult Index()
         {
@@ -24,22 +26,26 @@ namespace WebReservations.Controllers
         public JsonResult GetAvailableRooms(GetAvailableRooms formParams)
         {
 
-            AvailabilityService avail = new AvailabilityService();
-            Object response = avail.GetAvailableRooms(DateTime.Parse(formParams.datepickerArrival), DateTime.Parse(formParams.datepickerDeparture), 1, formParams.adultCount, formParams.childCount);
+            
+            Object response = this.avail.GetAvailableRooms(DateTime.Parse(formParams.datepickerArrival), DateTime.Parse(formParams.datepickerDeparture), 1, formParams.adultCount, formParams.childCount);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetAvailablePackages(GetAvailablePackages formParams)
+        {
+            Object response = this.avail.GetAvailablePackages(DateTime.Parse(formParams.datepickerArrival), DateTime.Parse(formParams.datepickerDeparture), 1, formParams.adultCount, formParams.childCount);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult Test()
         {
-            AvailabilityService avail = new AvailabilityService();
-            Object response = avail.GetAvailableRooms(DateTime.Parse("2012-12-19"), DateTime.Parse("2012-12-20").AddDays(1));
+            Object response = this.avail.GetAvailableRooms(DateTime.Parse("2012-12-19"), DateTime.Parse("2012-12-20").AddDays(1));
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult TestPackage()
         {
-            AvailabilityService avail = new AvailabilityService();
-            Object response = avail.GetAvailablePackages(DateTime.Parse("2012-12-19"), DateTime.Parse("2012-12-20").AddDays(1));
+            Object response = this.avail.GetAvailablePackages(DateTime.Parse("2012-12-26"), DateTime.Parse("2012-12-27").AddDays(1));
             return Json(response, JsonRequestBehavior.AllowGet);
         }
         /*
@@ -122,22 +128,19 @@ namespace WebReservations.Controllers
 
         public JsonResult TestQueryRoomTypes()
         {
-            InformationService infoService = new InformationService();
-            LovResponse response = infoService.getRoomTypes();
+            LovResponse response = this.infoService.getRoomTypes();
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult TestQueryFeautures()
         {
-            InformationService infoService = new InformationService();
-            LovResponse response = infoService.getFeatures();
+            LovResponse response = this.infoService.getFeatures();
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult TestGetRates()
         {
-            InformationService infoService = new InformationService();
-            RateResponse response = infoService.getRates(DateTime.Parse("2012-12-19"), DateTime.Parse("2012-12-20").AddDays(1));
+            RateResponse response = this.infoService.getRates(DateTime.Parse("2012-12-19"), DateTime.Parse("2012-12-20").AddDays(1));
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 

@@ -71,6 +71,7 @@
     <Compile Include="Lib\AvailabilityService.cs" />
     <Compile Include="Lib\Helper.cs" />
     <Compile Include="Lib\InformationService.cs" />
+    <Compile Include="Models\GetAvailablePackages.cs" />
     <Compile Include="Models\GetAvailableRooms.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\Availability\Reference.cs">
