@@ -203,36 +203,32 @@ function getActiveTab() {
                                 if(value.roomTypeCode == roomTypeValue.roomTypeCode){
                                     dataRoomRates[value.roomTypeCode]['description'] = roomTypeValue.RoomTypeDescription.Items[0].Value;
                                     dataRoomRates[value.roomTypeCode]['numberOfUnits'] = roomTypeValue.numberOfUnits;
+                                    dataRoomRates[value.roomTypeCode]['currencyCode'] = value.Total.currencyCode;
                                 }
                             });
                             
                             reservationData['dataRoomRates'] = dataRoomRates;
                         });
 
-                        var roomTemp = $('#rowTemplate');
-                        //roomTemp = $(roomTemp);
+                        var roomTemp = $('#rowTemplate').clone();
                         finalRoomTemplate = $('<ul class="media-list" />');
                         $.each(dataRoomRates, function(index, value){
-                            //console.log(value.rates);
                             $.each(value.rates, function(ratesIndex, ratesValue){
                                 $('img.media-object', roomTemp).attr('src', '/content/themes/base/images/' + index + '.png');
-                                //console.log($('img.media-object', roomTemp).attr('src'));
-                                //console.log($('div.media-body.media-heading', roomTemp).html());
                                 $('div.media-body h4.media-heading', roomTemp).html(value.description);
-                                //console.log($('div.roomDesc p', roomTemp).html());
-                                $('div.roomDesc p', roomTemp).html(ratesValue);
+                                var ratesText = value.currencyCode + '&nbsp;' + ratesValue;
+                                $('div.roomDesc p', roomTemp).html(ratesText);
                                 $('div.roomButton button', roomTemp).attr('data-room', index);
+                                $('div.roomButton button', roomTemp).attr('data-ratePlan', ratesIndex);
+                                $('div.roomButton button', roomTemp).attr('data-rate', ratesValue);
+                                $('div.roomButton button', roomTemp).attr('data-currencyCode', value.currencyCode);
                                 var liTemplate = $('<li class="media" />');
-                                var roomClone = roomTemp.clone();
-                                console.log(roomClone.html());
-                                $(liTemplate).append(roomClone.html());
+                                $(liTemplate).append(roomTemp.html());
                                 $(finalRoomTemplate).append(liTemplate);
-                                //console.log(finalRoomTemplate.html());
                             });
                         });
-                        $('.roomRow').append($(finalRoomTemplate).clone());
+                        $('.roomRow').html($(finalRoomTemplate).clone());
                         methods.buildStaySummary();
-                        console.log(dataRoomRates);
                         $('#steps li:eq(' + options + ') a').tab('show');
                     }
                     else{
@@ -254,9 +250,38 @@ function getActiveTab() {
                     methods.hideModal();
                 })
                 .success(function(data){
+                    var roomType = 
+                    reservationData.rooms = {
+                        'roomType': $('.roomsGroup.active').attr('data-room'),
+                        'ratePlan': $('.roomsGroup.active').attr('data-ratePlan'),
+                        'rate': $('.roomsGroup.active').attr('data-rate')
+                    };
                     if(data.statusCode == 0){
+                        dataAddOns = {};
+                        $.each(data.packageElements, function(index, value){
+                            if(typeof dataAddOns[value.packageCode] == 'undefined'){
+                                dataAddOns[value.packageCode] = {};
+                            }
+                            dataAddOns[value.packageCode]['amount'] = value.Amount.Value;
+                            dataAddOns[value.packageCode]['currencyCode'] = value.Amount.currencyCode;
+                            dataAddOns[value.packageCode]['description'] = value.Description[0].Item[0].Value;
+                        });
+                        var addOnsTemp = $('#addOnsTemplate').clone();
+                        finalAddOnsTemplate = $('<ul class="media-list" />');
+                        $.each(dataAddOns, function(index, value){
+                            $('img.media-object', addOnsTemp).attr('src', '/content/themes/base/images/' + index + '.png');
+                            $('div.media-body h4.media-heading', addOnsTemp).html(value.description);
+                            var ratesText = value.currencyCode + '&nbsp;' + value.amount;
+                            $('div.addOnsDesc p', addOnsTemp).html(ratesText);
+                            $('div.addOnsButton button', addOnsTemp).attr('data-addOns', index);
+                            $('div.addOnsButton button', addOnsTemp).attr('data-amount', value.amount);
+                            $('div.addOnsButton button', addOnsTemp).attr('data-currencyCode', value.currencyCode);
+                            var liTemplate = $('<li class="media" />');
+                            $(liTemplate).append(addOnsTemp.html());
+                            $(finalAddOnsTemplate).append(liTemplate);
+                        });
+                        $('.addOnsRow').html($(finalAddOnsTemplate).clone());
                         methods.buildStaySummary();
-                        console.log(data);
                         $('#steps li:eq(' + options + ') a').tab('show');
                     }
                     else{
@@ -267,7 +292,6 @@ function getActiveTab() {
                 .error(function(data){
                     console.log(data);
                 });
-            methods.hideModal();
             $('#steps li:eq(' + options + ') a').tab('show');
         },
 
@@ -296,6 +320,10 @@ function getActiveTab() {
                 $('.numNights [class*="span"]:last-child').html(reservationData.stayDateRange.numNights).parent('div').show();
                 $('.numRooms [class*="span"]:last-child').html('1').parent('div').show();
                 $('.numAdultsChildren [class*="span"]:last-child').html(reservationData.stayDateRange.numAdult + '/' + reservationData.stayDateRange.numChild).parent('div').show();
+            }
+
+            if(typeof reservationData.rooms != 'undefined'){
+                $('.roomCategory [class*="span"]:last-child').html(dataRoomRates[reservationData.rooms.roomType].description).parent('div').show();
             }
         }
 

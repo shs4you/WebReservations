@@ -52,7 +52,7 @@
     width: 20px;
 }
 
-.roomRow ul li:nth-child(odd)
+.roomRow ul li
 {
     background-color: #F9F9F9;
 }
@@ -65,4 +65,9 @@
 .roomRow
 {
     font-size: 14px;
+}
+
+.addOnsRow ul li
+{
+    background-color: #F9F9F9;
 }
