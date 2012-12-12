@@ -110,8 +110,11 @@
                     </div>
                 </div>
             </div>
-            <div class="alert alert-error" style="display: none;">
+            <div class="alert alert-error hide">
                 Invalid action
+            </div>
+            <div id="serverError" class="alert alert-error hide">
+                There was an error. Please try again later.
             </div>
             <div class="tab-pane active" id="dates">
                 <form class="form-horizontal" id="datesForm">
@@ -176,24 +179,108 @@
                 </form>
             </div>
             <div class="tab-pane" id="roomRates">
-                <h1>
-                    Best Available Rate</h1>
+                <div class="page-header">
+                    <h1>
+                        Best Available Rate</h1>
+                </div>
                 <form class="form-horizontal" id="roomRatesForm">
                 <div class="row-fluid roomRow btn-group" data-toggle="buttons-radio">
                 </div>
                 </form>
             </div>
             <div class="tab-pane" id="enhanceStay">
-                <h1>
-                    Enhance your stay</h1>
-                    <form class="form-horizontal" id="enhanceStayFrom">
+                <div class="page-header">
+                    <h1>
+                        Enhance your stay</h1>
+                </div>
+                <form class="form-horizontal" id="enhanceStayFrom">
                 <div class="row-fluid addOnsRow">
                 </div>
                 </form>
             </div>
             <div class="tab-pane" id="guestDetails">
-                <p>
-                    Enter guest details</p>
+                <div class="page-header">
+                    <h1>
+                        Enter guest details</h1>
+                </div>
+                <form class="form-horizontal" id="guestDetailsForm">
+                <div class="page-header">
+                    <h2>
+                        Guest Profile</h2>
+                </div>
+                <h3>Fecth profile if you already have an account with us</h3>
+                <div class="control-group">
+                    <label class="control-label" for="membership_no">
+                        Membership Number</label>
+                    <div class="controls">
+                        <input type="text" id="membership_no" name="membership_no" placeholder="Membership Number">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="password">
+                        Password</label>
+                    <div class="controls">
+                        <input type="text" id="password" name="password" placeholder="Password">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="button" class="btn btn-primary">FETCH PROFILE</button>
+                    </div>
+                </div>
+                <hr />
+                <div class="page-header">
+                    <h2>
+                        Contact Information</h2>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="salutation">
+                        Salutation</label>
+                    <div class="controls">
+                        <select class="span3" id="salutation" name="salutation">
+                            <option value="">Salutation</option>
+                            <option value="mr">Mr.</option>
+                            <option value="ms">Ms.</option>
+                            <option value="mrs">Mrs.</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="surname">
+                        Family Name/Surname</label>
+                    <div class="controls">
+                        <input type="text" id="surname" name="surname" placeholder="Family Name/Surname">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="firstname">
+                        First Name/Given Name</label>
+                    <div class="controls">
+                        <input type="text" id="firstname" name="firstname" placeholder="First Name/Given Name">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="email">
+                        Email Address</label>
+                    <div class="controls">
+                        <input type="text" id="email" name="email" placeholder="Email Address">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="retype_email">
+                        Retype Email Address</label>
+                    <div class="controls">
+                        <input type="text" id="retype_email" name="retype_email" placeholder="Retype Email Address">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="phone">
+                        Phone Number</label>
+                    <div class="controls">
+                        <input type="text" id="phone" name="phone" placeholder="Phone Number">
+                    </div>
+                </div>
+                </form>
             </div>
             <div class="tab-pane" id="confirmBooking">
                 <p>
@@ -257,4 +344,3 @@
         </div>
     </div>
 </div>
-
