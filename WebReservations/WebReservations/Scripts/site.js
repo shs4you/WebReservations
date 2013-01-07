@@ -292,7 +292,6 @@ function getActiveTab() {
                 .error(function(data){
                     console.log(data);
                 });
-            $('#steps li:eq(' + options + ') a').tab('show');
         },
 
         enhanceStay: function (options) {
